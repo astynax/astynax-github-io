@@ -3,12 +3,15 @@
 import           Data.Monoid (mappend)
 import           Hakyll
 
-
 --------------------------------------------------------------------------------
 main :: IO ()
 main = hakyll $ do
     match "images/*" $ do
         route   idRoute
+        compile copyFileCompiler
+
+    match "files/*" $ do
+        route   (gsubRoute "files/" (const ""))
         compile copyFileCompiler
 
     match "css/*" $ do

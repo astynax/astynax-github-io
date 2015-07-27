@@ -11,11 +11,15 @@ div#header {
     padding: 12px 0px 12px 0px;
 }
 
-div#logo a {
+div#logo {
     color: black;
     float: left;
     font-size: 18px;
     font-weight: bold;
+}
+
+div#logo a {
+    color: black;
     text-decoration: none;
 }
 
