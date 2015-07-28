@@ -1,17 +1,19 @@
 ---
-title: About
+title: Об
 ---
-Nullam imperdiet sodales orci vitae molestie. Nunc quam orci, pharetra a
-rhoncus vitae, eleifend id felis. Suspendisse potenti. Etiam vitae urna orci.
-Quisque pellentesque dignissim felis, egestas tempus urna luctus vitae. In hac
-habitasse platea dictumst. Morbi fringilla mattis odio, et mattis tellus
-accumsan vitae.
 
-1. Amamus Unicode 碁
-2. Interdum nex magna.
+Сие есть бложик имени
+<a href="$twitter$">astynax</a>
+'а, созданный оным для публикации статеек околопрограммистского толка.
 
-Vivamus eget mauris sit amet nulla laoreet lobortis. Nulla in diam elementum
-risus convallis commodo. Cras vehicula varius dui vitae facilisis. Proin
-elementum libero eget leo aliquet quis euismod orci vestibulum. Duis rhoncus
-lorem consequat tellus vestibulum aliquam. Quisque orci orci, malesuada porta
-blandit et, interdum nec magna.
+Раньше бложик собирался [Николой](https://getnikola.com/),
+теперь над этим трудится [Dr.Hakyll](http://jaspervdj.be/hakyll).
+
+```
+-----BEGIN GEEK CODE BLOCK-----
+Version: 3.12
+GE/CS/L/IT d-(x) s:+ a C++ w t+
+L+++> E r+++ M-(--) Y+ 5++ e+++
+X++ !tv b++ D++ W++ R? PGP-(++)
+------END GEEK CODE BLOCK------
+```
