@@ -2,7 +2,7 @@ body {
     color: black;
     font-size: 16px;
     margin: 0px auto 0px auto;
-    width: 900px;
+    width: 640px;
 }
 
 div#header {
@@ -57,4 +57,12 @@ div.info {
     color: #555;
     font-size: 14px;
     font-style: italic;
+}
+
+tr.header {
+    background-color: #ddd;
+}
+
+tr.odd {
+    background-color: #eee;
 }
