@@ -11,7 +11,7 @@ main = hakyll $ do
     serve "files/*"
 
     match "old_files/*" $ do
-        route   (gsubRoute "files/" (const ""))
+        route   (gsubRoute "old_files/" (const ""))
         compile copyFileCompiler
 
     match "css/*" $ do
