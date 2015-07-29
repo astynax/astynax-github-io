@@ -38,12 +38,18 @@ main = hakyll $ do
 
     match "templates/*" $ compile templateCompiler
 
+    create ["feed.xml"] $ do
+        route   idRoute
+        compile $ posts
+                  >>= return . (take 10)
+                  >>= renderRss feedCfg defaultContext
+
     where
-        titled t = mappend $ constField "title" t
+        posts = recentFirst =<< loadAll "posts/*"
 
         withPosts f ctx = do
-            posts <- recentFirst =<< loadAll "posts/*"
-            return $ listField "posts" postCtx (return $ f posts) `mappend` ctx
+            ps <- posts
+            return $ listField "posts" postCtx (return $ f ps) `mappend` ctx
 
         render ctx =
             (>>= relativizeUrls)
@@ -70,3 +76,11 @@ commonContext =
     constField "twitter" "https://twitter.com/alex_pir" `mappend`
     constField "github"  "https://github.com/astynax"   `mappend`
     defaultContext
+
+feedCfg :: FeedConfiguration
+feedCfg = FeedConfiguration
+          "Astynax's Blog"
+          "Posts on \"Astynax's Blog\""
+          "astynax"
+          ""
+          "http://astynax.github.io"
