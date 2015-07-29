@@ -1,6 +1,7 @@
 ---
 title: Python: (func|iter)tools
 tags: python,fp
+description: Материалы к мастерклассы по (func|iter)tools
 ---
 
 ## Python: (func|iter)tools

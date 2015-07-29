@@ -1,6 +1,7 @@
 ---
 title: Я люблю плюшки Clojure
 tags: clojure
+description: Мысли об удобстве некоторых аспектов языка Clojure
 ---
 
 ## Я люблю плюшки Clojure (№1)
@@ -139,4 +140,3 @@ nil ; 6 не входит в набор!
 Всё это очень удобно при решении широкого круга задач! И очень мне нравится :)
 
 На всякий случай код положил в [Gist](https://gist.github.com/astynax/5956370#file-clojure-data-examples-clj)
-
