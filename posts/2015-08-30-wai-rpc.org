@@ -1,14 +1,19 @@
+---
+title: RPC на основе WAI
+tags: haskell, webdev
+description: Демонстрация создания простого сервиса с помошью WAI
+---
 #+TITLE: RPC на основе WAI
-#+TAGS: haskell, webdev
+
 * Введение
 Сейчас web-разработка на *Haskell* достаточно проста, даже для новичка. Этому способствует
-наличие таких пакетов, как [[http://www.yesodweb.com/][Yasod]] и [[http://snapframework.com/][Snap]]. Но не всегда мощь и полнота охвата необходимы.
+наличие таких пакетов, как [[http://www.yesodweb.com/][Yasod]] и [[http://snapframework.com/][Snap]]. Но не всегда их мощь и полнота охвата необходимы.
 Порой от "сервера" требуется столь мало, что не хочется иметь в зависимостях подобных "монстров",
-особенно в тех случаях, когда задача /достаточно просто/ решаема и более простыми средствами.
+особенно в тех случаях, когда задача /достаточно легко/ решаема и более простыми средствами.
 
 Пусть примером послужит такая задача: требуется реализовать сервис, позволяющий вызывать
 на сервере некие функции и получать результат вызова, или, говоря общепринятым языком,
-выполнять RPC.
+выполнять [[https://en.wikipedia.org/wiki/Remote_procedure_call][RPC]].
 
 Такую задачу можно решить, используя [[http://hackage.haskell.org/package/Spock][Spock]], [[http://hackage.haskell.org/package/scotty][scotty]] или, скажем, [[http://hackage.haskell.org/package/servant][servant]],
 но "мы пойдем другим путем"[[https://ru.wikipedia.org/wiki/%25D0%259B%25D0%25B5%25D0%25BD%25D0%25B8%25D0%25BD%25D1%2581%25D0%25BA%25D0%25B8%25D0%25B5_%25D1%2584%25D1%2580%25D0%25B0%25D0%25B7%25D1%258B][©]]!
@@ -41,7 +46,7 @@ API будет следующим:
 #+end_src
 
 *ВНИМАНИЕ:* предполагается, что у вас установлена утилита [[https://github.com/commercialhaskell/stack][stack]],
-также ключ ~--resolver lst-3.2~ означает, что будет использоваться снимок версии 3.2 -
+а ключ ~--resolver lst-3.2~ означает, что будет использоваться снимок версии 3.2 -
 именно этот снимок был актуален на момент написания статьи.
 (подробнее о снимках можно почитать в документации к stack).
 
@@ -70,7 +75,9 @@ API будет следующим:
 
   application :: Application
   application _ respond = respond $
-    responseLBS status200 [(hContentType, "text/plain")] "Hello World"
+    responseLBS status200
+                [(hContentType, "text/plain")]
+                "Hello World"
 
   main :: IO ()
   main = do
@@ -115,9 +122,9 @@ run 8000 application
                      -> IO ResponseReceived
 #+end_src
 
-Здесь первый аргумент, это тип [[http://haddock.stackage.org/lts-3.2/wai-3.0.3.0/Network-Wai.html#t:Request][Request]], описывающий запрос, а второй - "ответчик",
+Здесь первый аргумент, это тип [[http://haddock.stackage.org/lts-3.2/wai-3.0.3.0/Network-Wai.html#t:Request][Request]], описывающий запрос, а второй, это "ответчик" -
 функция, призванная возвращать ответ [[http://haddock.stackage.org/lts-3.2/wai-3.0.3.0/Network-Wai.html#t:Response][Response]] в процессе выполнения некой работы
-(монада ~IO~).
+(для этого в типе монада ~IO~).
 
 В данном случае приложение сразу же отвечает фиксированным сообщением, поэтому
 тело приложения - единственный вызов ответчика ~respond~.
@@ -126,11 +133,12 @@ run 8000 application
 
 #+begin_src haskell
   responseLBS status200
-                -- :: Network.HTTP.Types.Status
+              -- :: Network.HTTP.Types.Status
               [(hContentType, "text/plain")]
-                -- :: [(Network.HTTP.Types.HeaderName, ByteString)]
+              -- :: [(Network.HTTP.Types.HeaderName
+              --     ,ByteString)]
               "Hello World!"
-                -- :: Lazy ByteString
+              -- :: Lazy ByteString
 #+end_src
 
 Всё достаточно привычно: статус, заголовки и тело.
@@ -147,18 +155,21 @@ run 8000 application
 
 #+begin_src haskell
   import Network.Wai (Response)
-  import Network.HTTP.Types (Status, notFound404, badRequest400)
+  import Network.HTTP.Types (Status, notFound404,
+                             badRequest400)
   import qualified Data.ByteString.Lazy as LBS
 
   -- ...
 
-  responseOk, responseNotFound, responseBadRequest :: LBS.ByteString -> Response
+  responseOk, responseNotFound, responseBadRequest
+    :: LBS.ByteString -> Response
   responseOk         = responsePlainText status200
   responseNotFound   = responsePlainText notFound404
   responseBadRequest = responsePlainText badRequest400
 
   responsePlainText :: Status -> LBS.ByteString -> Response
-  responsePlainText = (`responseLBS` [(hContentType, "text/plain")])
+  responsePlainText =
+    (`responseLBS` [(hContentType, "text/plain")])
 #+end_src
 
 (в зависимости проекта нужно будет добавить ~bytestring~)
@@ -173,7 +184,7 @@ run 8000 application
   application req respond = respond $
     if requestMethod req /= methodGet
     then responseBadRequest "Only GET method is allowed!"
-    else -- далее всё как раньше с учетом вспомогательных функций
+    else -- далее всё как раньше с учетом вспом. функций
       responseOk "Hello World"
 #+end_src
 
@@ -191,8 +202,8 @@ run 8000 application
   type FunctionDescription = BS.ByteString
   type FunctionArg         = BS.ByteString
   type FunctionResult      = BS.ByteString
-  type FunctionSpec        = ( FunctionDescription
-                             , (FunctionArg -> FunctionResult) )
+  type FunctionSpec        = (FunctionDescription
+                             ,(FunctionArg -> FunctionResult))
 
   library :: Map FunctionName FunctionSpec
   library = fromList []
@@ -239,11 +250,12 @@ run 8000 application
 
     where
       query = rawQueryString req
-      path  = BS.tail $ rawPathInfo req  -- отброшен ведущий '/'
+      path  = BS.tail $ rawPathInfo req -- без ведущего '/'
 
       renderedListOfFunctions =
         LBS.intercalate "\n"
-        $ "Available functions:" : map LBS.fromStrict listOfFunctions
+        $ "Available functions:"
+          : map LBS.fromStrict listOfFunctions
 #+end_src
 
 Теперь у нашего сервера есть *маршрутизация*, пусть и в зачаточном виде :)
@@ -296,10 +308,10 @@ run 8000 application
 
   library :: Map FunctionName FunctionSpec
   library =
-    fromList [ ("reverse", ( "returns string with characters in reverset order",
-                             BS.reverse ))
-             , ("upper",   ( "returns string with each character in upper case",
-                             BS.map toUpper ))]
+    fromList [("reverse", ("returns string with characters in reverset order",
+                           BS.reverse ))
+             ,("upper",   ("returns string with each character in upper case",
+                           BS.map toUpper ))]
 #+end_src
 
 И, разумеется, проверим:
@@ -351,7 +363,9 @@ Middleware - это преобразователь приложений, нас�
       putStrLn $ statusOf response ++ ": " ++ query
       respond response
     where
-      query = BS.unpack $ BS.concat [rawPathInfo req, rawQueryString req]
+      query = BS.unpack
+            $ BS.concat [ rawPathInfo    req
+                        , rawQueryString req ]
       statusOf = show . statusCode . responseStatus
 
    main = do
