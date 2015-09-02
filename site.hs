@@ -1,9 +1,7 @@
---------------------------------------------------------------------------------
 {-# LANGUAGE OverloadedStrings #-}
-import           Data.Monoid (mappend)
+
 import           Hakyll
 
---------------------------------------------------------------------------------
 main :: IO ()
 main = hakyll $ do
     serve "images/*"
@@ -58,7 +56,7 @@ main = hakyll $ do
         renderMD ctx =
             getResourceBody
             >>= applyAsTemplate ctx
-            >>= return . renderPandoc
+            >>= renderPandoc
             >>= render ctx
 
         serve = flip match $ do
