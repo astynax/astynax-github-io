@@ -1,6 +1,6 @@
 ---
 title: Literate Programming
-tags: literate rpogramming,python
+tags: literate programming,python
 description: Слайды к докладу по Literate Programming
 ---
 

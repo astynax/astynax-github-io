@@ -1,6 +1,6 @@
 ---
 title: RPC на основе WAI
-tags: haskell, webdev
+tags: haskell,webdev
 description: Демонстрация создания простого сервиса с помошью WAI
 ---
 #+TITLE: RPC на основе WAI
