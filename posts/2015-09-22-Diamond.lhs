@@ -69,4 +69,4 @@ A couple of examples:
 < pad 'C' 'B' → " B "
 < pad 'C' 'C' → "C  "
 
-That's all! Try it! Just ``runghc``' this file :)
+That's all! Try it! Just ``runghc``' [this file](https://raw.githubusercontent.com/astynax/astynax-github-io/master/posts/2015-09-22-Diamond.lhs) :)
