@@ -1,0 +1,14 @@
+#+TITLE: Drafts
+#+DESCRIPTION: drafts and ideas for new posts
+
+* ˜elm-state˜
+Need some comparison:
+** "+"
+- main idea
+- composability
+- no more huge ˜update˜ function
+- pretty good modularization and isolation of components
+- Focus fits good
+** "-"
+- bad logging
+- unreadable messages
